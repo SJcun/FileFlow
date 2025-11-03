@@ -8,6 +8,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FileFlow.Model.Poco;
+using FileFlow.ViewModel;
 
 namespace FileFlow
 {
@@ -18,16 +20,48 @@ namespace FileFlow
     {
         #region 私有变量
 
-        
+        /// <summary>
+        /// 绑定的ViewModel
+        /// </summary>
+        private MainWindowViewModel _viewModel;
+
+        /// <summary>
+        /// 四级目录
+        /// </summary>
+        private StateFolder[] FourFolder;
 
         #endregion
 
         public MainWindow()
         {
             InitializeComponent();
+            _viewModel = new MainWindowViewModel();
+            DataContext = _viewModel;   //绑定ViewModel
+
+            //添加四级目录
+            AddFourFolders();
         }
 
         #region 私有方法
+
+        /// <summary>
+        /// 添加四级目录
+        /// </summary>
+        private void AddFourFolders()
+        {
+            // 待进行
+            StateFolder pendingFolder = new StateFolder("待进行", "", new SolidColorBrush(Color.FromRgb(10, 50, 80)));
+            // 进行中
+            StateFolder ongoingFolder = new StateFolder("进行中", "", new SolidColorBrush(Color.FromRgb(80, 50, 80)));
+            // 已完成 
+            StateFolder completedFolder = new StateFolder("已完成", "", new SolidColorBrush(Color.FromRgb(100, 50, 80)));
+            // 待删除
+            StateFolder deletedFolder = new StateFolder("待删除", "", new SolidColorBrush(Color.FromRgb(10, 200, 80)));
+
+            FourFolder = new StateFolder[4] { pendingFolder, ongoingFolder, completedFolder, deletedFolder };
+            _viewModel.StateFolders = FourFolder;
+        }
+
 
         private void BrowseRootFolder_Click(object sender, RoutedEventArgs e)
         {
